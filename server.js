@@ -1,13 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-require('dotenv').config();
-// const querystring = require('querystring');
-// const url = require('url');
 
 let app = express();
 
-// Body parser middleware add a query key to the request object and
+// Body parser middleware adds a query key to the request object and
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
@@ -21,22 +18,26 @@ app.get('/', async (req, res) => {
     });
 });
 
-// Function to handle the root path
+// Function to handle get request
 app.get('/api/rates', async (req, res) => {
+  // wrap process in a try-catch block to handle unexpected errors
     try {
         const queryParams = req.query;
         console.log({params: req.params, queryParams});
+        // make request to external API
         const result = await axios.get(forex_rates_api_url, {
                 params: {
                     base: queryParams.base,
                     symbols: queryParams.currency
                 }
             })
+            // then return true if response is successful
             .then(function (response) {
                 return {
                     status: true, data: response.data
                 };
             })
+            // if not, catch the unsuccessful response
             .catch(function (error) {
                 const errorObj = error.response.data;
                 console.log({errorObj});
@@ -44,6 +45,7 @@ app.get('/api/rates', async (req, res) => {
                     status: false, error_message: errorObj.error
                 }
             });
+          // if result status is true, return res.json object
         if (result.status) {
             const responseData = result.data;
             return res.json({
@@ -54,7 +56,7 @@ app.get('/api/rates', async (req, res) => {
                 }
             });
         }
-
+        // else return error with error message
         return res.status(400).json({
             message: result.error_message,
             status: false,
