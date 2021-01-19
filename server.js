@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const forex_rates_api_url = `https://api.exchangeratesapi.io/latest`;
 
 // Function to handle the root path
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     return res.json({
         message: 'Welcome to Enye FX Rates',
         status: true,
