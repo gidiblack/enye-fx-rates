@@ -2,12 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 
-// const favicon = require('express-favicon');
+const favicon = require('express-favicon');
 
 let app = new express();
 // eslint-disable-next-line no-undef
-app.use(express.static(__dirname +'/public/favicon.ico'));
-// app.use(favicon(__dirname +'/public/favicon.ico'));
+app.use(favicon(__dirname +'/public/favicon.ico'));
+// app.use(express.static(__dirname +'/public/favicon.ico'));
 
 // Body parser middleware adds a query key to the request object and
 app.use(bodyParser.urlencoded({extended: false}));
